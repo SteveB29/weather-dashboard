@@ -11,10 +11,17 @@ header h1 {
   flex-flow: wrap row;
 }
 
-.city-lookup {
-  flex-grow: 1;
+.current-weather {
+  border: 1px black solid;
+  padding-left: 5px;
 }
 
-.weather-info {
-  flex-grow: 3;
+.card-body label {
+  font-weight: bolder;
+  font-size: xx-large;
+}
+
+.btn {
+  width: 100%;
+  margin: 5px 0;
 }
