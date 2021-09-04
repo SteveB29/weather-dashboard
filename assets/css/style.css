@@ -1,0 +1,20 @@
+header h1 {
+  color: white;
+  background-image: linear-gradient( to right, #3463bc, #20084b);
+  text-align: center;
+  font-weight: bolder;
+  padding: 2px 0 5px 0;
+}
+
+.main-content {
+  display: flex;
+  flex-flow: wrap row;
+}
+
+.city-lookup {
+  flex-grow: 1;
+}
+
+.weather-info {
+  flex-grow: 3;
+}
