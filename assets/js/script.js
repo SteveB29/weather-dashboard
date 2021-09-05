@@ -59,7 +59,7 @@ var displayWeather = function(city, icon, temp, wind, humid, uv) {
   var weatherBox = document.querySelector('.current-weather');
   weatherBox.innerHTML = "";
 
-  // create  head elements
+  // create head elements
   var weatherDivEl = document.createElement('div');
   var weatherHeaderEl = document.createElement('h3');
   var iconDivEl = document.createElement('div');
@@ -69,6 +69,12 @@ var displayWeather = function(city, icon, temp, wind, humid, uv) {
   var tempEl = document.createElement('p');
   var windEl = document.createElement('p');
   var humidEl = document.createElement('p');
+
+  // create uv index elements
+  var uvDivEl = document.createElement('div');
+  var uvPEl = document.createElement('p');
+  var uvColorDivEl = document.createElement('div');
+  var uvColorPEl = document.createElement('p');
 
   // set content and attributes of header elements
   weatherDivEl.className = "weather-header";
@@ -80,14 +86,28 @@ var displayWeather = function(city, icon, temp, wind, humid, uv) {
   windEl.textContent = 'Wind: ' + wind + ' MPH';
   humidEl.textContent = 'Humidity: ' + humid + '%';
 
-  // append the elements
+  // set content and attributs of uv elemts
+  uvDivEl.className = 'uv-index';
+  uvPEl.textContent = 'UV Index:';
+  uvColorDivEl.className = 'uv-number';
+  uvColorPEl.textContent = uv;
+
+  // append the header elements
   iconDivEl.appendChild(iconImgEl);
   weatherDivEl.appendChild(weatherHeaderEl);
   weatherDivEl.appendChild(iconDivEl);
   weatherBox.appendChild(weatherDivEl);
+
+  // append the stats elements
   weatherBox.appendChild(tempEl);
   weatherBox.appendChild(windEl);
   weatherBox.appendChild(humidEl);
+
+  // append the uv elements
+  uvColorDivEl.appendChild(uvColorPEl);
+  uvDivEl.appendChild(uvPEl);
+  uvDivEl.appendChild(uvColorDivEl);
+  weatherBox.appendChild(uvDivEl);
 }
 
 searchForm.addEventListener('click', locationTextGet);
