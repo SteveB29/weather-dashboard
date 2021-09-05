@@ -27,6 +27,11 @@ header h1 {
   margin: 5px 0;
 }
 
+.previous-search {
+  border-top: 2px gray solid;
+  margin: 0 1rem;
+}
+
 .weather-header {
   display: flex;
   flex-flow: wrap row;

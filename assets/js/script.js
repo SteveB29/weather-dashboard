@@ -3,9 +3,10 @@ var searchForm = document.querySelector('#submit-button');
 var apiLocationUrl = "https://api.openweathermap.org/geo/1.0/direct?q=";
 var apiWeatherUrl = "https://api.openweathermap.org/data/2.5/onecall?";
 var apiKey = "&appid=aded44f82b44e0af228ba72e16261166";
-// var cityName = "New Milford,CT,US"
 var apiExclude = "&exclude=minutely,hourly"
 var apiUnits = "&units=imperial"
+
+var searchArray = [];
 
 
 var locationTextGet = function(event) {
@@ -23,13 +24,13 @@ var locationFetch = function(cityName) {
   var locationUrl = apiLocationUrl + cityName + apiKey;
   fetch(locationUrl).then(function(response) {
     response.json().then(function(response) {
-
       if (response.length === 0) {
-        alert("Please enter a valid city");
+        alert("Please enter a valid city (type the name of the city only)");
       } else {
         var lat = response[0].lat;
         var lon = response[0].lon;
         var city = response[0].name;
+        cityArrayAdd(city);
         weatherFetch(lat, lon, city);
       }
     });
@@ -144,6 +145,37 @@ var fiveDayForecast = function(forecast) {
     fiveDayDivEl.appendChild(fiveHumidEl);
     forecastDiv.appendChild(fiveDayDivEl);
   }
+}
+
+var previousCitySearchElAdd = function(city) {
+  var previousCityEl = document.querySelector('#previous-cities');
+
+  var newCityButton = document.createElement('button');
+  newCityButton.className = 'btn btn-primary';
+  newCityButton.textContent = city;
+  previousCityEl.appendChild(newCityButton);
+}
+
+var cityArrayAdd = function(cityText) {
+  if (searchArray.length === 0) {
+    previousCitySearchElAdd(cityText);
+    searchArray.push(cityText);
+    localStorage.setItem('cities', JSON.stringify(searchArray));
+  } else {
+    let arrayCheck = 0;
+    for (let i = 0 ; i < searchArray.length; i++) {
+      if (searchArray[i] === cityText) {
+        arrayCheck++;
+      }
+    }
+
+    if (arrayCheck === 0) {
+      previousCitySearchElAdd(cityText);
+      searchArray.push(cityText)
+      localStorage.setItem('cities', JSON.stringify(searchArray));
+    }
+  }
+  console.log(searchArray);
 }
 
 searchForm.addEventListener('click', locationTextGet);
