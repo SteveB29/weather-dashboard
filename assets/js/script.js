@@ -45,33 +45,49 @@ var weatherFetch = function(lat, lon, city) {
     response.json().then(function(response) {
       console.log(response);
       var icon = response.current.weather[0].icon;
-      displayWeather(city, icon);
+      var temp = response.current.temp;
+      var wind = response.current.wind_speed;
+      var humid = response.current.humidity;
+      var uv = response.current.uvi;
+      displayWeather(city, icon, temp, wind, humid, uv);
     })
   })
 }
 
-var displayWeather = function(city, icon) {
+var displayWeather = function(city, icon, temp, wind, humid, uv) {
   // select current weather box and remove contents
   var weatherBox = document.querySelector('.current-weather');
   weatherBox.innerHTML = "";
 
-  // create elements
+  // create  head elements
   var weatherDivEl = document.createElement('div');
   var weatherHeaderEl = document.createElement('h3');
   var iconDivEl = document.createElement('div');
   var iconImgEl = document.createElement('img');
 
-  // set content and attributes of elements
+  // create stats elements
+  var tempEl = document.createElement('p');
+  var windEl = document.createElement('p');
+  var humidEl = document.createElement('p');
+
+  // set content and attributes of header elements
   weatherDivEl.className = "weather-header";
   weatherHeaderEl.innerText = city + " (" + dayjs().format('D/M/YYYY') + ")";
   iconImgEl.setAttribute('src', 'http://openweathermap.org/img/wn/' + icon + '@2x.png')
+
+  // set content of stats elements
+  tempEl.textContent = 'Temp: ' + temp + '°F';
+  windEl.textContent = 'Wind: ' + wind + ' MPH';
+  humidEl.textContent = 'Humidity: ' + humid + '%';
 
   // append the elements
   iconDivEl.appendChild(iconImgEl);
   weatherDivEl.appendChild(weatherHeaderEl);
   weatherDivEl.appendChild(iconDivEl);
   weatherBox.appendChild(weatherDivEl);
-
+  weatherBox.appendChild(tempEl);
+  weatherBox.appendChild(windEl);
+  weatherBox.appendChild(humidEl);
 }
 
 searchForm.addEventListener('click', locationTextGet);
