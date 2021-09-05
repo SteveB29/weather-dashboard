@@ -54,11 +54,25 @@ header h1 {
 }
 
 .moderate-index {
-  /* color: white; */
   background-color: yellow;
 }
 
 .high-index {
   color: white;
   background-color: red;
+}
+
+.forecast-box {
+  margin-left: auto;
+}
+
+.five-day-box {
+  background-color: #33475a;
+  color: white;
+  margin-right: 20px;
+}
+
+.five-day-box img {
+  height: 55px;
+  width: 55px;
 }
