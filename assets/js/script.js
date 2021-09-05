@@ -91,6 +91,13 @@ var displayWeather = function(city, icon, temp, wind, humid, uv) {
   uvPEl.textContent = 'UV Index:';
   uvColorDivEl.className = 'uv-number';
   uvColorPEl.textContent = uv;
+  if (uv >= 7) {
+    uvColorPEl.className = 'high-index';
+  } else if (uv >= 3) {
+    uvColorPEl.className = 'moderate-index';
+  } else {
+    uvColorPEl.className = 'low-index';
+  }
 
   // append the header elements
   iconDivEl.appendChild(iconImgEl);
