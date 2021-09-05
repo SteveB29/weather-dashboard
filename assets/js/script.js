@@ -10,6 +10,7 @@ var apiExclude = "&exclude=minutely,hourly"
 var locationTextGet = function(event) {
   event.preventDefault();
   var city = document.querySelector('#city-search');
+  console.log(dayjs().format('D/M/YYYY'));
   if (city.value) {
     locationFetch(city.value);
     city.value = "";
@@ -22,10 +23,16 @@ var locationFetch = function(cityName) {
   var locationUrl = apiLocationUrl + cityName + apiKey;
   fetch(locationUrl).then(function(response) {
     response.json().then(function(response) {
-      console.log(response);
-      var lat = response[0].lat;
-      var lon = response[0].lon;
-      weatherFetch(lat, lon);
+
+      if (response.length === 0) {
+        alert("Please enter a valid city");
+      } else {
+        console.log(response);
+        var lat = response[0].lat;
+        var lon = response[0].lon;
+        displayWeather(response[0].name);
+        weatherFetch(lat, lon);
+      }
     });
   });
 }
@@ -40,5 +47,13 @@ var weatherFetch = function(lat, lon) {
   })
 }
 
+var displayWeather = function(city) {
+  var weatherBox = document.querySelector('.current-weather');
+  var weatherHeader = document.createElement('h3');
+  weatherHeader.innerText = city + " (" + dayjs().format('D/M/YYYY') + ")";
+  console.log(weatherHeader);
+  weatherBox.appendChild(weatherHeader);
+
+}
 
 searchForm.addEventListener('click', locationTextGet);
