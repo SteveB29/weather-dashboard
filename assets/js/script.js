@@ -168,7 +168,7 @@ var previousCitySearchElAdd = function(city) {
 }
 
 var cityArrayAdd = function(cityText) {
-  if (searchArray.length === 0) {
+  if (!searchArray) {
     previousCitySearchElAdd(cityText);
     searchArray.push(cityText);
     localStorage.setItem('cities', JSON.stringify(searchArray));
@@ -190,11 +190,17 @@ var cityArrayAdd = function(cityText) {
 }
 
 var loadPreviousCities = function() {
-  searchArray = (JSON.parse(localStorage.getItem('cities')));
+  var previousArray = (JSON.parse(localStorage.getItem('cities')));
+
+  if (previousArray) {
+    searchArray = previousArray;
+  }
   console.log(searchArray);
 
-  for (let i = 0; i < searchArray.length; i++) {
-    previousCitySearchElAdd(searchArray[i]);
+  if (searchArray) {
+    for (let i = 0; i < searchArray.length; i++) {
+      previousCitySearchElAdd(searchArray[i]);
+    }
   }
 }
 
