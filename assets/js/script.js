@@ -9,7 +9,7 @@ var apiUnits = "&units=imperial"
 
 var searchArray = [];
 
-
+// gets the location fron the text box on button click and alerts if no city was entered
 var locationTextGet = function(event) {
   event.preventDefault();
   var city = document.querySelector('#city-search');
@@ -21,8 +21,8 @@ var locationTextGet = function(event) {
   }
 }
 
+// when a previous button was clicked, checks if it was a button or the element. If button, sends city button to location fetch
 var previousLocation = function(event) {
-  console.log(event.target.id);
   if (event.target.id === "previous-cities") {
     console.log('ignore click');
   } else {
@@ -30,6 +30,7 @@ var previousLocation = function(event) {
   }
 }
 
+// gets the latitude and longitude of entered city. If a city is not found, asks for a valid city
 var locationFetch = function(cityName) {
   var locationUrl = apiLocationUrl + cityName + apiKey;
   fetch(locationUrl).then(function(response) {
@@ -44,9 +45,15 @@ var locationFetch = function(cityName) {
         weatherFetch(lat, lon, city);
       }
     });
+  })
+  .catch(function(error) {
+    alert('Unable to connect to the weather');
   });
 }
 
+
+// takes the latitude and longitude of a city and fetches the full weather data. Sends the current weather to displayWeather
+// and sends the forecast data to five day forecast function
 var weatherFetch = function(lat, lon, city) {
   var weatherUrl = apiWeatherUrl + 'lat=' + lat + '&lon=' + lon + apiUnits + apiExclude + apiKey;
   fetch(weatherUrl).then(function(response) {
@@ -60,9 +67,14 @@ var weatherFetch = function(lat, lon, city) {
       fiveDayForecast(response.daily);
     })
   })
+  .catch(function(error) {
+    alert('Unable to connect to the weather');
+  });
 }
 
+// takes the current weather data and appends it to the page
 var displayWeather = function(city, icon, temp, wind, humid, uv) {
+
   // select current weather box and remove contents
   var weatherBox = document.querySelector('.current-weather');
   weatherBox.innerHTML = "";
@@ -99,6 +111,7 @@ var displayWeather = function(city, icon, temp, wind, humid, uv) {
   uvPEl.textContent = 'UV Index:';
   uvColorDivEl.className = 'uv-number';
   uvColorPEl.textContent = uv;
+  // adds class according to the severity of the UV index
   if (uv >= 7) {
     uvColorPEl.className = 'high-index';
   } else if (uv >= 3) {
@@ -125,10 +138,13 @@ var displayWeather = function(city, icon, temp, wind, humid, uv) {
   weatherBox.appendChild(uvDivEl);
 }
 
+// appends the five day forecast data to the page
 var fiveDayForecast = function(forecast) {
+  // selects the 5 day forecast box and removes the previous data
   var forecastDiv = document.querySelector('#forecast-box');
   forecastDiv.innerHTML = '';
 
+  // loops five times for the 5 day forecast, array[0] is the current day
   for (var i = 1; i < 6 ; i++) {
     
     // create the elements for the five day forecast
@@ -157,6 +173,7 @@ var fiveDayForecast = function(forecast) {
   }
 }
 
+// adds new city to the previous city search buttons
 var previousCitySearchElAdd = function(city) {
   var previousCityEl = document.querySelector('#previous-cities');
 
@@ -167,36 +184,40 @@ var previousCitySearchElAdd = function(city) {
   previousCityEl.appendChild(newCityButton);
 }
 
+// adds city to cityArray to be added to localStorage
 var cityArrayAdd = function(cityText) {
+  // if the array is empty, sends the city to button add and adds to the array and localstorage
   if (!searchArray) {
     previousCitySearchElAdd(cityText);
     searchArray.push(cityText);
     localStorage.setItem('cities', JSON.stringify(searchArray));
   } else {
     let arrayCheck = 0;
+    // checks if the city is already in the array
     for (let i = 0 ; i < searchArray.length; i++) {
       if (searchArray[i] === cityText) {
         arrayCheck++;
       }
     }
-
+    // if the city is not in the array, adds to the array, localStorage, and the previous button search
     if (arrayCheck === 0) {
       previousCitySearchElAdd(cityText);
       searchArray.push(cityText)
       localStorage.setItem('cities', JSON.stringify(searchArray));
     }
   }
-  console.log(searchArray);
 }
 
+// loads the previous cities from localstorage
 var loadPreviousCities = function() {
   var previousArray = (JSON.parse(localStorage.getItem('cities')));
 
+  // if the localstorage is not null, sets searchArray to the localstorage array
   if (previousArray) {
     searchArray = previousArray;
   }
-  console.log(searchArray);
 
+  // adds previous buttons if localstorage is not empty
   if (searchArray) {
     for (let i = 0; i < searchArray.length; i++) {
       previousCitySearchElAdd(searchArray[i]);
@@ -204,7 +225,9 @@ var loadPreviousCities = function() {
   }
 }
 
+// loads previous cities on page load
 loadPreviousCities();
 
+// adds event listeners to the search button and previous button search
 searchForm.addEventListener('click', locationTextGet);
 previousCity.addEventListener('click', previousLocation);

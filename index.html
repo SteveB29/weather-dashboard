@@ -15,17 +15,25 @@
     </header>
 
     <div class="main-content container-fluid">
+
+        <!-- search and previous search block -->
         <aside class="city-lookup col-lg-3">
+            <!-- search form -->
             <form id="search-form" class="card-body">
                 <label for="city-search" class="form-label">Search for a City:</label>
                 <input name="city-search" id="city-search" type="text" class="form-control"/>
                 <button type="reset" id="submit-button" class="btn btn-primary">Search</button>
-              </form>
-              <div class="previous-search"></div>
-              <div id="previous-cities" class="card-body">
-              </div>
+            </form>
+
+            <!-- previous search buttons -->
+            <div class="previous-search"></div>
+            <div id="previous-cities" class="card-body">
+            </div>
         </aside>
+
+        <!-- weather info -->
         <div class="weather-info col-lg-9">
+            <!-- current weather, placeholder if nothing has been loaded -->
             <section class="current-weather">
                 <div class="weather-header">
                     <h3>City (Date)</h3>
@@ -39,6 +47,8 @@
                     </div>
                 </div>
             </section>
+
+            <!-- five day forecast -->
             <section>
                 <div>
                     <h3>5-Day Forecast:</h3>
