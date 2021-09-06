@@ -1,4 +1,5 @@
 var searchForm = document.querySelector('#submit-button');
+var previousCity = document.querySelector('#previous-cities');
 
 var apiLocationUrl = "https://api.openweathermap.org/geo/1.0/direct?q=";
 var apiWeatherUrl = "https://api.openweathermap.org/data/2.5/onecall?";
@@ -17,6 +18,15 @@ var locationTextGet = function(event) {
     city.value = "";
   } else {
     alert("Please enter a city");
+  }
+}
+
+var previousLocation = function(event) {
+  console.log(event.target.id);
+  if (event.target.id === "previous-cities") {
+    console.log('ignore click');
+  } else {
+    locationFetch(event.target.id);
   }
 }
 
@@ -151,8 +161,9 @@ var previousCitySearchElAdd = function(city) {
   var previousCityEl = document.querySelector('#previous-cities');
 
   var newCityButton = document.createElement('button');
-  newCityButton.className = 'btn btn-primary';
+  newCityButton.className = 'btn btn-primary previous-button';
   newCityButton.textContent = city;
+  newCityButton.id = city;
   previousCityEl.appendChild(newCityButton);
 }
 
@@ -178,4 +189,16 @@ var cityArrayAdd = function(cityText) {
   console.log(searchArray);
 }
 
+var loadPreviousCities = function() {
+  searchArray = (JSON.parse(localStorage.getItem('cities')));
+  console.log(searchArray);
+
+  for (let i = 0; i < searchArray.length; i++) {
+    previousCitySearchElAdd(searchArray[i]);
+  }
+}
+
+loadPreviousCities();
+
 searchForm.addEventListener('click', locationTextGet);
+previousCity.addEventListener('click', previousLocation);
